@@ -20,5 +20,7 @@ WORKDIR /src
 
 EXPOSE 1313
 
+USER 1000
+
 ENTRYPOINT ["/hugo.sh"]
 
