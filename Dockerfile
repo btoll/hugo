@@ -8,8 +8,17 @@ RUN wget -O - "https://github.com/gohugoio/hugo/releases/download/v$VERSION/hugo
     && mkdir -p /usr/local/bin \
     && mv /tmp/hugo /usr/local/bin/hugo
 
+ENV THEME hugo-lithium-theme
+COPY hugo.sh /
+RUN apk update \
+    && apk add git \
+    && mkdir /themes \
+    && git clone https://github.com/niklasbuschmann/contrast-hugo.git /themes/contrast-hugo \
+    && git clone https://github.com/jrutheiser/hugo-lithium-theme.git /themes/hugo-lithium-theme
+
 WORKDIR /src
+
 EXPOSE 1313
 
-CMD ["/usr/local/bin/hugo", "--source", "/src", "--theme", "lithium", "--destination", "public", "--baseURL", "/"]
+ENTRYPOINT ["/hugo.sh"]
 
