@@ -9,13 +9,13 @@ RUN wget -O - "https://github.com/gohugoio/hugo/releases/download/v$VERSION/hugo
     && mv /tmp/hugo /usr/local/bin/hugo
 
 ENV THEME hugo-lithium-theme
-COPY hugo.sh /
 RUN apk update \
     && apk add git \
     && mkdir /themes \
     && git clone https://github.com/niklasbuschmann/contrast-hugo.git /themes/contrast-hugo \
     && git clone https://github.com/jrutheiser/hugo-lithium-theme.git /themes/hugo-lithium-theme
 
+COPY hugo.sh ./
 WORKDIR /src
 
 EXPOSE 1313

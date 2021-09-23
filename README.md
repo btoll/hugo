@@ -1,6 +1,6 @@
 # Hugo
 
-Compile your markdown for your website built with [Hugo] in a container.
+Create new articles and compile your markdown for your website with [Hugo] in a container.
 
 The tag represents the version of Hugo.
 
@@ -9,6 +9,7 @@ For example, to download the version of Hugo 0.80.0:
 ```
 docker pull btoll/hugo:0.80.0
 ```
+
 [`btoll/hugo` on Docker Hub]
 
 ## Supported configs
@@ -19,6 +20,11 @@ docker pull btoll/hugo:0.80.0
 - `DESTINATION`
     + `Hugo` will output the "compiled" website to this location on the host.  It will create the directory if not present.
     + Defaults to `public`
+
+- `METHOD`
+    + Both creating new articles and publish is supported.
+        - Creating (`METHOD=new`) will add the file to the `./content/post/` directory on the host.
+    + Defaults to `publish`
 
 - `SOURCE`
     + This is the location in the container into which the host directory should be mapped via a bind mount.
@@ -35,11 +41,21 @@ docker pull btoll/hugo:0.80.0
 
 ## Examples
 
+### Creating a New Article
+
+```
+docker run --rm -e METHOD=new -e ARTICLE=kubernetes -v $HOME/projects/benjamintoll.com:/src btoll/hugo:0.80.0
+```
+
+### Publishing
+
 Use the `contrast-hugo` theme and output the results to the `out` directory on the host:
 
 ```
-docker run --rm -e THEME=contrast-hugo -e DESTINATION=out -v $HOME/projects/benjamintoll.com:/src btoll/hugo:0.80.0
+docker run --rm -e METHOD=publish -e THEME=contrast-hugo -e DESTINATION=out -v $HOME/projects/benjamintoll.com:/src btoll/hugo:0.80.0
 ```
+
+> Note that `METHOD=publish` is unnecessary as `publish` is the default operation.
 
 Use the default `hugo-lithium-them` theme and the default `public` destination on the host but change the location of the website source code to `foo`:
 
